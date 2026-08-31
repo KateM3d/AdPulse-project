@@ -1,6 +1,9 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+BACKEND_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
@@ -8,6 +11,7 @@ class Settings(BaseSettings):
     app_env: str = "development"
     api_v1_prefix: str = "/api/v1"
     cors_origins: str = "http://localhost:5173"
+    data_dir: Path = BACKEND_DIR / "data"
 
     model_config = SettingsConfigDict(
         env_file=".env",

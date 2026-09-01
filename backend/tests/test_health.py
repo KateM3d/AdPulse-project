@@ -10,3 +10,10 @@ def test_health_check_returns_ok() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_application_startup_validates_data() -> None:
+    with TestClient(app) as startup_client:
+        response = startup_client.get("/api/v1/health")
+
+        assert response.status_code == 200

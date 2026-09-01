@@ -3,7 +3,7 @@ from datetime import date
 
 from app.models.domain import MetricRecord, Platform
 from app.schemas.analytics import PlatformSummary, TimelinePoint
-from app.schemas.campaign import CampaignSummary
+from app.schemas.campaign import CampaignResponse, CampaignSummary
 from app.services.metrics import calculate_rate
 
 
@@ -103,3 +103,13 @@ class CampaignService:
                 key=lambda item: item[0].value,
             )
         ]
+
+    def get_campaign(
+        self,
+        metrics: list[MetricRecord],
+    ) -> CampaignResponse:
+        return CampaignResponse(
+            summary=self.get_summary(metrics),
+            timeline=self.get_timeline(metrics),
+            platforms=self.get_platform_summary(metrics),
+        )

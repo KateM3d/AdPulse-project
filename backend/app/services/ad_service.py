@@ -2,13 +2,8 @@ from collections import defaultdict
 from datetime import date
 
 from app.models.domain import Ad, Comment, MetricRecord, Platform
-from app.schemas.ad import (
-    AdComment,
-    AdDetail,
-    AdPlatformSummary,
-    AdSummary,
-    AdTimelinePoint,
-)
+from app.schemas.ad import AdComment, AdDetail, AdSummary
+from app.schemas.analytics import PlatformSummary, TimelinePoint
 from app.services.metrics import calculate_rate
 
 
@@ -57,7 +52,7 @@ class AdService:
         self,
         ad_id: str,
         metrics: list[MetricRecord],
-    ) -> list[AdTimelinePoint]:
+    ) -> list[TimelinePoint]:
         grouped: dict[date, dict[str, int]] = defaultdict(
             lambda: {
                 "impressions": 0,
@@ -75,7 +70,7 @@ class AdService:
             grouped[metric.date]["engagements"] += metric.engagements
 
         return [
-            AdTimelinePoint(
+            TimelinePoint(
                 date=metric_date,
                 impressions=values["impressions"],
                 clicks=values["clicks"],
@@ -96,7 +91,7 @@ class AdService:
         self,
         ad_id: str,
         metrics: list[MetricRecord],
-    ) -> list[AdPlatformSummary]:
+    ) -> list[PlatformSummary]:
         grouped: dict[Platform, dict[str, int]] = defaultdict(
             lambda: {
                 "impressions": 0,
@@ -114,7 +109,7 @@ class AdService:
             grouped[metric.platform]["engagements"] += metric.engagements
 
         return [
-            AdPlatformSummary(
+            PlatformSummary(
                 platform=platform,
                 impressions=values["impressions"],
                 clicks=values["clicks"],

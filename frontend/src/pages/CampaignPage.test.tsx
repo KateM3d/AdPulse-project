@@ -1,14 +1,21 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 
+import { getAds } from "../api/ads";
 import { getCampaign } from "../api/campaign";
 import { CampaignPage } from "./CampaignPage";
+
+vi.mock("../api/ads", () => ({
+  getAds: vi.fn(),
+}));
 
 vi.mock("../api/campaign", () => ({
   getCampaign: vi.fn(),
 }));
 
+const mockedGetAds = vi.mocked(getAds);
 const mockedGetCampaign = vi.mocked(getCampaign);
 
 describe("CampaignPage", () => {
@@ -27,6 +34,8 @@ describe("CampaignPage", () => {
       platforms: [],
     });
 
+    mockedGetAds.mockResolvedValue([]);
+
     const queryClient = new QueryClient({
       defaultOptions: {
         queries: {
@@ -37,16 +46,19 @@ describe("CampaignPage", () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <CampaignPage />
+        <MemoryRouter>
+          <CampaignPage />
+        </MemoryRouter>
       </QueryClientProvider>,
     );
 
     expect(
       await screen.findByRole("heading", {
-        name: "Campaign Dashboard",
+        name: "Campaign Performance",
       }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText("Impressions: 1281840")).toBeInTheDocument();
+    expect(screen.getByText("Impressions")).toBeInTheDocument();
+    expect(screen.getByText("1,281,840")).toBeInTheDocument();
   });
 });

@@ -223,3 +223,33 @@ def test_get_platform_summary_returns_empty_list_when_no_metrics() -> None:
     summaries = CampaignService().get_platform_summary([])
 
     assert summaries == []
+
+
+def test_get_campaign_combines_summary_timeline_and_platforms() -> None:
+    metrics = [
+        MetricRecord(
+            date=date(2026, 3, 9),
+            ad_id="ad-1",
+            platform=Platform.GOOGLE,
+            impressions=100,
+            clicks=10,
+            engagements=20,
+        ),
+        MetricRecord(
+            date=date(2026, 3, 16),
+            ad_id="ad-1",
+            platform=Platform.META,
+            impressions=300,
+            clicks=15,
+            engagements=30,
+        ),
+    ]
+
+    campaign = CampaignService().get_campaign(metrics)
+
+    assert campaign.summary.total_impressions == 400
+    assert len(campaign.timeline) == 2
+    assert [item.platform for item in campaign.platforms] == [
+        Platform.GOOGLE,
+        Platform.META,
+    ]

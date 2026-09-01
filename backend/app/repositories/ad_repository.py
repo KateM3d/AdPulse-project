@@ -30,3 +30,9 @@ class AdRepository:
                 ) from exc
 
         return ads
+
+    def get_by_id(self, ad_id: str) -> Ad | None:
+        return next(
+            (ad for ad in self.get_all() if ad.ad_id == ad_id),
+            None,
+        )

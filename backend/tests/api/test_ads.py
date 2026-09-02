@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+from app.core.config import Settings, get_settings
 from app.main import app
 
 client = TestClient(app)
@@ -57,3 +58,28 @@ def test_get_ad_returns_404_when_ad_does_not_exist() -> None:
     assert response.json() == {
         "detail": "Ad 'does-not-exist' was not found",
     }
+
+
+def test_generate_ad_insights_returns_404_when_ad_does_not_exist() -> None:
+    response = client.post("/api/v1/ads/does-not-exist/insights")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Ad 'does-not-exist' was not found",
+    }
+
+
+def test_generate_ad_insights_returns_503_when_api_key_missing() -> None:
+    app.dependency_overrides[get_settings] = lambda: Settings(openai_api_key=None)
+
+    try:
+        response = client.post(
+            "/api/v1/ads/global_contractors/insights",
+        )
+
+        assert response.status_code == 503
+        assert response.json() == {
+            "detail": "OpenAI API key is not configured",
+        }
+    finally:
+        app.dependency_overrides.clear()

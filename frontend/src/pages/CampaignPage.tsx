@@ -42,8 +42,6 @@ export const CampaignPage = () => {
     <main className="campaign-page">
       <header className="campaign-page__header">
         <div>
-          <span className="campaign-page__eyebrow">Tidewell Payroll</span>
-
           <h1>Campaign Performance</h1>
 
           <p className="campaign-page__subtitle">

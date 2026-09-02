@@ -2,10 +2,13 @@ import { Link, useParams } from "react-router-dom";
 
 import { AdComments } from "../components/AdComments/AdComments";
 import { AdNavigation } from "../components/AdNavigation/AdNavigation";
+import { AiCampaignAnalyst } from "../components/AiCampaignAnalyst/AiCampaignAnalyst";
+import { AiCampaignInsight } from "../components/AiCampaignInsight/AiCampaignInsight";
 import { CampaignTimeline } from "../components/CampaignTimeline/CampaignTimeline";
 import { MetricCard } from "../components/MetricCard/MetricCard";
 import { PlatformBreakdown } from "../components/PlatformBreakdown/PlatformBreakdown";
 import { useAd } from "../hooks/useAd";
+import { useAdInsights } from "../hooks/useAdInsights";
 import { formatNumber, formatPercentage } from "../utils/formatters";
 import { CTR_TOOLTIP, ENGAGEMENT_RATE_TOOLTIP } from "../utils/metricTooltips";
 
@@ -14,6 +17,14 @@ import "./AdDetailPage.scss";
 export const AdDetailPage = () => {
   const { adId = "" } = useParams();
   const adQuery = useAd(adId);
+  const {
+    data: aiInsight,
+    isFetching: isAiPending,
+    isError: isAiError,
+    refetch: generateInsights,
+  } = useAdInsights(adId);
+
+  const visibleAiInsight = isAiPending ? undefined : aiInsight;
 
   if (adQuery.isPending) {
     return (
@@ -97,8 +108,19 @@ export const AdDetailPage = () => {
               tooltip={ENGAGEMENT_RATE_TOOLTIP}
             />
           </div>
+
+          <AiCampaignAnalyst
+            insight={visibleAiInsight}
+            isPending={isAiPending}
+            isError={isAiError}
+            onGenerate={() => {
+              void generateInsights();
+            }}
+          />
         </section>
       </section>
+
+      {visibleAiInsight && <AiCampaignInsight insight={visibleAiInsight} />}
 
       <section className="ad-detail-page__analytics">
         <CampaignTimeline timeline={ad.timeline} />

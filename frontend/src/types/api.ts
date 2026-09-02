@@ -57,3 +57,12 @@ export interface AdDetail extends AdSummary {
   platforms: PlatformSummary[];
   comments: AdComment[];
 }
+
+export type AiCampaignInsight = {
+  summary: string;
+  strengths: string[];
+  risks: string[];
+  recommended_next_experiment: string;
+  hypothesis: string;
+  metrics_to_measure: string[];
+};

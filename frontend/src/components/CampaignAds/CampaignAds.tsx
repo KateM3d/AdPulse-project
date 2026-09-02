@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import type { AdSummary } from "../../types/api";
@@ -11,110 +10,50 @@ interface CampaignAdsProps {
 }
 
 export const CampaignAds = ({ ads }: CampaignAdsProps) => {
-  const [selectedAdId, setSelectedAdId] = useState(ads[0]?.ad_id ?? "");
-
   if (ads.length === 0) {
     return null;
   }
 
-  const selectedAd = ads.find((ad) => ad.ad_id === selectedAdId) ?? ads[0];
-
   return (
     <section className="campaign-ads">
       <header className="campaign-ads__header">
-        <div>
-          <span className="campaign-ads__eyebrow">Creative performance</span>
-
-          <h2>Campaign ads</h2>
-
-          <p>Compare ad performance and select a creative to inspect.</p>
-        </div>
+        <h2>Campaign ads</h2>
+        <p>Compare individual creatives and open a full performance analysis.</p>
       </header>
 
-      <div className="campaign-ads__workspace">
-        <div className="campaign-ads__list">
-          <div className="campaign-ads__list-header">
-            <span>Creative</span>
-            <span>CTR</span>
-            <span>Eng.</span>
-          </div>
+      <div className="campaign-ads__grid">
+        {ads.map((ad) => (
+          <article key={ad.ad_id} className="campaign-ads__card">
+            <h3 className="campaign-ads__title">{ad.title}</h3>
 
-          {ads.map((ad) => {
-            const isSelected = ad.ad_id === selectedAd.ad_id;
-
-            return (
-              <button
-                key={ad.ad_id}
-                type="button"
-                className={`campaign-ads__row${
-                  isSelected ? " campaign-ads__row--selected" : ""
-                }`}
-                aria-pressed={isSelected}
-                onClick={() => setSelectedAdId(ad.ad_id)}
-              >
-                <span className="campaign-ads__creative">
-                  <img src={`/ads/${ad.image}`} alt="" />
-
-                  <span>
-                    <strong>{ad.title}</strong>
-
-                    <small>{formatNumber(ad.total_impressions)} impressions</small>
-                  </span>
-                </span>
-
-                <span className="campaign-ads__metric">{formatPercentage(ad.ctr)}</span>
-
-                <span className="campaign-ads__metric">
-                  {formatPercentage(ad.engagement_rate)}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <article className="campaign-ads__preview">
-          <div className="campaign-ads__preview-image">
-            <img
-              src={`/ads/${selectedAd.image}`}
-              alt={`${selectedAd.title} creative`}
-            />
-          </div>
-
-          <div className="campaign-ads__preview-content">
-            <div>
-              <span className="campaign-ads__preview-label">Selected creative</span>
-
-              <h3>{selectedAd.title}</h3>
-            </div>
-
-            <dl className="campaign-ads__preview-metrics">
-              <div>
+            <dl className="campaign-ads__metrics">
+              <div className="campaign-ads__metric">
                 <dt>Impressions</dt>
-                <dd>{formatNumber(selectedAd.total_impressions)}</dd>
+                <dd>{formatNumber(ad.total_impressions)}</dd>
               </div>
 
-              <div>
+              <div className="campaign-ads__metric">
                 <dt>Clicks</dt>
-                <dd>{formatNumber(selectedAd.total_clicks)}</dd>
+                <dd>{formatNumber(ad.total_clicks)}</dd>
               </div>
 
-              <div>
+              <div className="campaign-ads__metric">
                 <dt>CTR</dt>
-                <dd>{formatPercentage(selectedAd.ctr)}</dd>
+                <dd>{formatPercentage(ad.ctr)}</dd>
               </div>
 
-              <div>
-                <dt>Engagement</dt>
-                <dd>{formatPercentage(selectedAd.engagement_rate)}</dd>
+              <div className="campaign-ads__metric">
+                <dt>Engagement rate</dt>
+                <dd>{formatPercentage(ad.engagement_rate)}</dd>
               </div>
             </dl>
 
-            <Link to={`/ads/${selectedAd.ad_id}`} className="campaign-ads__details-link">
+            <Link className="campaign-ads__link" to={`/ads/${ad.ad_id}`}>
               View full analysis
               <span aria-hidden="true">→</span>
             </Link>
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 
 import type { AdSummary } from "../../types/api";
@@ -29,7 +28,7 @@ const ads: AdSummary[] = [
 ];
 
 describe("CampaignAds", () => {
-  it("renders ad information", () => {
+  it("renders a metric card for each ad", () => {
     render(
       <MemoryRouter>
         <CampaignAds ads={ads} />
@@ -37,53 +36,33 @@ describe("CampaignAds", () => {
     );
 
     expect(
-      screen.getByRole("heading", {
-        name: "First Ad",
-      }),
+      screen.getByRole("heading", { name: "Campaign ads" }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText("100,000 impressions")).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", {
-        name: /view full analysis/i,
-      }),
-    ).toHaveAttribute("href", "/ads/first-ad");
+    expect(screen.getByRole("heading", { name: "First Ad" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Second Ad" })).toBeInTheDocument();
+
+    expect(screen.getByText("100,000")).toBeInTheDocument();
+    expect(screen.getByText("1,200")).toBeInTheDocument();
+    expect(screen.getByText("1.20%")).toBeInTheDocument();
+    expect(screen.getAllByText("Engagement rate").length).toBeGreaterThan(0);
+
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
-  it("selects an ad and updates the preview", async () => {
-    const user = userEvent.setup();
-
+  it("links each card to the ad analysis page", () => {
     render(
       <MemoryRouter>
         <CampaignAds ads={ads} />
       </MemoryRouter>,
     );
 
-    const firstAd = screen.getByRole("button", {
-      name: /first ad/i,
+    const links = screen.getAllByRole("link", {
+      name: /view full analysis/i,
     });
 
-    const secondAd = screen.getByRole("button", {
-      name: /second ad/i,
-    });
-
-    expect(firstAd).toHaveAttribute("aria-pressed", "true");
-
-    await user.click(secondAd);
-
-    expect(secondAd).toHaveAttribute("aria-pressed", "true");
-    expect(firstAd).toHaveAttribute("aria-pressed", "false");
-
-    expect(
-      screen.getByRole("img", {
-        name: "Second Ad creative",
-      }),
-    ).toHaveAttribute("src", "/ads/second.png");
-
-    expect(
-      screen.getByRole("link", {
-        name: /view full analysis/i,
-      }),
-    ).toHaveAttribute("href", "/ads/second-ad");
+    expect(links).toHaveLength(2);
+    expect(links[0]).toHaveAttribute("href", "/ads/first-ad");
+    expect(links[1]).toHaveAttribute("href", "/ads/second-ad");
   });
 });

@@ -20,8 +20,13 @@ describe("CampaignTimeline", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Campaign timeline",
+        name: "Performance over time",
       }),
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole("heading", { name: "Reach" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Efficiency" }),
     ).toBeInTheDocument();
   });
 
@@ -38,5 +43,25 @@ describe("CampaignTimeline", () => {
         name: "Ad performance over time",
       }),
     ).toBeInTheDocument();
+  });
+
+  it("renders a zero-impression point without invalid rates", () => {
+    render(
+      <CampaignTimeline
+        timeline={[
+          {
+            date: "2026-03-03",
+            impressions: 0,
+            clicks: 10,
+            engagements: 10,
+            ctr: 0,
+            engagement_rate: 0,
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Efficiency" })).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/NaN|Infinity/);
   });
 });

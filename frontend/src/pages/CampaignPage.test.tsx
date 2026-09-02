@@ -58,7 +58,7 @@ describe("CampaignPage", () => {
       }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText("Impressions")).toBeInTheDocument();
+    expect(screen.getAllByText("Impressions").length).toBeGreaterThan(0);
     expect(screen.getByText("1,281,840")).toBeInTheDocument();
   });
 });

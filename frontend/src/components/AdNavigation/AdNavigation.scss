@@ -1,0 +1,28 @@
+.ad-navigation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__link {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+
+    color: var(--color-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &--disabled {
+      color: var(--color-text-muted);
+      pointer-events: none;
+      text-decoration: none;
+    }
+  }
+
+  &__divider {
+    color: var(--color-border);
+  }
+}

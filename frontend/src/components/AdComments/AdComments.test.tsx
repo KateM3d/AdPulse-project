@@ -21,7 +21,7 @@ describe("AdComments", () => {
     render(<AdComments comments={comments} />);
 
     expect(
-      screen.getByRole("heading", { name: "Comments" }),
+      screen.getByRole("heading", { name: "Audience feedback" }),
     ).toBeInTheDocument();
 
     expect(screen.getByText("2 comments")).toBeInTheDocument();

@@ -1,11 +1,13 @@
 import { Link, useParams } from "react-router-dom";
 
 import { AdComments } from "../components/AdComments/AdComments";
+import { AdNavigation } from "../components/AdNavigation/AdNavigation";
 import { CampaignTimeline } from "../components/CampaignTimeline/CampaignTimeline";
 import { MetricCard } from "../components/MetricCard/MetricCard";
 import { PlatformBreakdown } from "../components/PlatformBreakdown/PlatformBreakdown";
 import { useAd } from "../hooks/useAd";
 import { formatNumber, formatPercentage } from "../utils/formatters";
+import { CTR_TOOLTIP, ENGAGEMENT_RATE_TOOLTIP } from "../utils/metricTooltips";
 
 import "./AdDetailPage.scss";
 
@@ -24,9 +26,12 @@ export const AdDetailPage = () => {
   if (adQuery.isError) {
     return (
       <main className="ad-detail-page">
-        <Link to="/" className="ad-detail-page__back">
-          ← Back to campaign
-        </Link>
+        <div className="ad-detail-page__navigation">
+          <Link to="/" className="ad-detail-page__back">
+            <span aria-hidden="true">←</span>
+            Back to campaign
+          </Link>
+        </div>
 
         <h1>Unable to load ad</h1>
 
@@ -43,16 +48,20 @@ export const AdDetailPage = () => {
 
   return (
     <main className="ad-detail-page">
-      <Link to="/" className="ad-detail-page__back">
-        ← Back to campaign
-      </Link>
-
       <header className="ad-detail-page__header">
-        <span className="ad-detail-page__eyebrow">Ad performance</span>
+        <div className="ad-detail-page__navigation">
+          <Link className="ad-detail-page__back" to="/">
+            <span aria-hidden="true">←</span>
+            Back to campaign
+          </Link>
 
-        <h1>{ad.title}</h1>
+          <AdNavigation currentAdId={ad.ad_id} />
+        </div>
 
-        <p>Review creative performance, platform results, and audience feedback.</p>
+        <div className="ad-detail-page__heading">
+          <h1>{ad.title}</h1>
+          <p>{ad.body}</p>
+        </div>
       </header>
 
       <section className="ad-detail-page__overview">
@@ -60,7 +69,9 @@ export const AdDetailPage = () => {
           <img src={`/ads/${ad.image}`} alt={`${ad.title} creative`} />
         </div>
 
-        <div className="ad-detail-page__overview-content">
+        <section className="ad-detail-page__performance">
+          <h2>Performance</h2>
+
           <div className="ad-detail-page__metrics">
             <MetricCard
               label="Impressions"
@@ -74,34 +85,25 @@ export const AdDetailPage = () => {
               value={formatNumber(ad.total_engagements)}
             />
 
-            <MetricCard label="CTR" value={formatPercentage(ad.ctr)} />
+            <MetricCard
+              label="CTR"
+              value={formatPercentage(ad.ctr)}
+              tooltip={CTR_TOOLTIP}
+            />
 
             <MetricCard
               label="Engagement rate"
               value={formatPercentage(ad.engagement_rate)}
+              tooltip={ENGAGEMENT_RATE_TOOLTIP}
             />
           </div>
-
-          <article className="ad-detail-page__copy">
-            <span className="ad-detail-page__section-label">Ad copy</span>
-
-            <h2>{ad.title}</h2>
-
-            <p>{ad.body}</p>
-          </article>
-        </div>
+        </section>
       </section>
 
       <section className="ad-detail-page__analytics">
-        <CampaignTimeline
-          timeline={ad.timeline}
-          title="Ad performance over time"
-        />
+        <CampaignTimeline timeline={ad.timeline} />
 
-        <PlatformBreakdown
-          platforms={ad.platforms}
-          title="Performance by platform"
-        />
+        <PlatformBreakdown platforms={ad.platforms} />
       </section>
 
       <AdComments comments={ad.comments} />

@@ -27,18 +27,6 @@
     }
   }
 
-  &__eyebrow {
-    display: block;
-    margin-bottom: 0.35rem;
-
-    font-size: var(--font-size-sm);
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-
-    color: var(--color-primary);
-  }
-
   &__count {
     padding: 0.35rem 0.65rem;
 

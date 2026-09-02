@@ -3,15 +3,17 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getAd } from "../api/ads";
-import type { AdDetail } from "../types/api";
+import { getAd, getAds } from "../api/ads";
+import type { AdDetail, AdSummary } from "../types/api";
 import { AdDetailPage } from "./AdDetailPage";
 
 vi.mock("../api/ads", () => ({
   getAd: vi.fn(),
+  getAds: vi.fn(),
 }));
 
 const mockedGetAd = vi.mocked(getAd);
+const mockedGetAds = vi.mocked(getAds);
 
 const ad = {
   ad_id: "payroll_in_minutes",
@@ -64,6 +66,39 @@ const ad = {
   ],
 } satisfies AdDetail;
 
+const ads = [
+  {
+    ad_id: "first-ad",
+    title: "First Ad",
+    image: "first.png",
+    total_impressions: 1000,
+    total_clicks: 10,
+    total_engagements: 20,
+    ctr: 1,
+    engagement_rate: 2,
+  },
+  {
+    ad_id: ad.ad_id,
+    title: ad.title,
+    image: ad.image,
+    total_impressions: ad.total_impressions,
+    total_clicks: ad.total_clicks,
+    total_engagements: ad.total_engagements,
+    ctr: ad.ctr,
+    engagement_rate: ad.engagement_rate,
+  },
+  {
+    ad_id: "last-ad",
+    title: "Last Ad",
+    image: "last.png",
+    total_impressions: 3000,
+    total_clicks: 30,
+    total_engagements: 60,
+    ctr: 1,
+    engagement_rate: 2,
+  },
+] satisfies AdSummary[];
+
 const renderPage = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -87,6 +122,7 @@ const renderPage = () => {
 describe("AdDetailPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockedGetAds.mockResolvedValue(ads);
   });
 
   it("loads the requested ad", async () => {
@@ -138,6 +174,22 @@ describe("AdDetailPage", () => {
     expect(screen.getAllByText("3.00%").length).toBeGreaterThan(0);
 
     expect(screen.getByText("Great concept.")).toBeInTheDocument();
+
+    expect(screen.queryByText("Ad performance")).not.toBeInTheDocument();
+    expect(screen.queryByText("Ad copy")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "Review creative performance, platform results, and audience feedback.",
+      ),
+    ).not.toBeInTheDocument();
+
+    expect(screen.getByRole("heading", { name: "Performance" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Performance over time" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Audience feedback" }),
+    ).toBeInTheDocument();
   });
 
   it("provides navigation back to the campaign", async () => {
@@ -150,6 +202,21 @@ describe("AdDetailPage", () => {
     });
 
     expect(backLink).toHaveAttribute("href", "/");
+  });
+
+  it("links to the previous and next ads", async () => {
+    mockedGetAd.mockResolvedValue(ad);
+
+    renderPage();
+
+    expect(await screen.findByRole("link", { name: "Previous" })).toHaveAttribute(
+      "href",
+      "/ads/first-ad",
+    );
+    expect(screen.getByRole("link", { name: "Next" })).toHaveAttribute(
+      "href",
+      "/ads/last-ad",
+    );
   });
 
   it("renders an error state when the ad cannot be loaded", async () => {

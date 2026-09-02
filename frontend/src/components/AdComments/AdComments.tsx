@@ -10,11 +10,7 @@ interface AdCommentsProps {
 export const AdComments = ({ comments }: AdCommentsProps) => (
   <section className="ad-comments">
     <header className="ad-comments__header">
-      <div>
-        <span className="ad-comments__eyebrow">Audience feedback</span>
-
-        <h2>Comments</h2>
-      </div>
+      <h2>Audience feedback</h2>
 
       <span className="ad-comments__count">{comments.length} comments</span>
     </header>

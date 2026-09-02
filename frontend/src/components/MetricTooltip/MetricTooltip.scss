@@ -1,0 +1,93 @@
+.metric-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.metric-tooltip {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+    padding: 0;
+
+    border: 1px solid var(--color-text-secondary);
+    border-radius: 50%;
+
+    background: transparent;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+
+    color: var(--color-text-secondary);
+
+    cursor: help;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__content {
+    position: absolute;
+    z-index: 20;
+
+    // Start around the icon and extend to the right.
+    bottom: calc(100% + 10px);
+    left: 50%;
+
+    width: 260px;
+    padding: 0.75rem 1rem;
+
+    border-radius: 6px;
+
+    background: var(--color-text);
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+
+    color: #fff;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform: translate(-10px, 4px);
+
+    transition:
+      opacity 150ms ease,
+      transform 150ms ease,
+      visibility 150ms ease;
+
+    &::after {
+      position: absolute;
+      top: 100%;
+      left: 8px;
+
+      border: 6px solid transparent;
+      border-top-color: var(--color-text);
+
+      content: "";
+    }
+  }
+
+  &:hover &__content,
+  &:focus-within &__content {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translate(-10px, 0);
+  }
+}

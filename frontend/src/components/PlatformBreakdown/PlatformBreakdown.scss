@@ -1,93 +1,104 @@
 .platform-breakdown {
   margin-top: 2rem;
+  padding: 1.5rem;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface);
 
   &__header {
-    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    margin-bottom: 1.75rem;
 
     h2 {
-      margin: 0.25rem 0 0;
+      margin: 0;
 
-      font-size: 1.45rem;
+      font-size: 24px;
       font-weight: 700;
+      line-height: 1.25;
       letter-spacing: -0.025em;
 
-      color: #182039;
+      color: var(--color-text);
+    }
+
+    p {
+      margin: 0.5rem 0 0;
+
+      font-size: 16px;
+      line-height: 1.5;
+
+      color: var(--color-text-secondary);
     }
   }
 
-  &__eyebrow {
-    font-size: 0.74rem;
-    font-weight: 750;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #5263ff;
-  }
+  &__metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-  }
+    flex-shrink: 0;
 
-  &__card {
-    padding: 1.45rem;
+    select {
+      min-width: 170px;
+      height: 42px;
 
-    border: 1px solid #e7eaf2;
-    border-radius: 16px;
+      padding: 0 2.25rem 0 0.75rem;
 
-    background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
 
-    box-shadow:
-      0 1px 2px rgba(15, 23, 42, 0.03),
-      0 8px 22px rgba(15, 23, 42, 0.035);
+      background: var(--color-surface);
 
-    h3 {
-      margin: 0 0 1.2rem;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
 
-      font-size: 1.05rem;
-      font-weight: 700;
+      color: var(--color-text);
 
-      color: #273153;
-    }
+      cursor: pointer;
 
-    dl {
-      display: grid;
-      gap: 0.9rem;
-      margin: 0;
-    }
-
-    dl > div {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid #f0f2f7;
-
-      &:last-child {
-        padding-bottom: 0;
-        border-bottom: 0;
+      &:focus {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
       }
     }
-
-    dt {
-      font-size: 0.88rem;
-      color: #7f8799;
-    }
-
-    dd {
-      margin: 0;
-
-      font-size: 0.9rem;
-      font-weight: 700;
-
-      color: #293456;
-    }
   }
 
-  @media (max-width: 900px) {
-    &__grid {
-      grid-template-columns: 1fr;
+  &__metric-label {
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--color-text-secondary);
+  }
+
+  &__chart {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .recharts-tooltip-wrapper {
+    font-size: 14px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+
+    &__header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &__metric {
+      width: 100%;
+
+      select {
+        width: 100%;
+      }
     }
   }
 }

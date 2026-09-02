@@ -16,12 +16,52 @@ const timeline: TimelinePoint[] = [
 
 describe("CampaignTimeline", () => {
   it("renders the timeline heading", () => {
-    render(<CampaignTimeline data={timeline} />);
+    render(<CampaignTimeline timeline={timeline} />);
 
     expect(
       screen.getByRole("heading", {
-        name: "Campaign timeline",
+        name: "Performance over time",
       }),
     ).toBeInTheDocument();
+
+    expect(screen.getByRole("heading", { name: "Reach" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Efficiency" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a custom title", () => {
+    render(
+      <CampaignTimeline
+        timeline={timeline}
+        title="Ad performance over time"
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Ad performance over time",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a zero-impression point without invalid rates", () => {
+    render(
+      <CampaignTimeline
+        timeline={[
+          {
+            date: "2026-03-03",
+            impressions: 0,
+            clicks: 10,
+            engagements: 10,
+            ctr: 0,
+            engagement_rate: 0,
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Efficiency" })).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/NaN|Infinity/);
   });
 });

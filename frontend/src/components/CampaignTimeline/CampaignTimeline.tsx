@@ -1,5 +1,6 @@
 import {
   CartesianGrid,
+  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -9,62 +10,198 @@ import {
 } from "recharts";
 
 import type { TimelinePoint } from "../../types/api";
-import { formatDate, formatNumber } from "../../utils/formatters";
+import { formatNumber, formatPercentage } from "../../utils/formatters";
 
 import "./CampaignTimeline.scss";
 
 interface CampaignTimelineProps {
-  data: TimelinePoint[];
+  timeline: TimelinePoint[];
+  title?: string;
+  description?: string;
 }
 
-export const CampaignTimeline = ({ data }: CampaignTimelineProps) => (
-  <section className="campaign-timeline">
-    <div className="campaign-timeline__header">
-      <div>
-        <span className="campaign-timeline__eyebrow">Performance over time</span>
-        <h2>Campaign timeline</h2>
+interface TimelineChartPoint extends TimelinePoint {
+  engagementRate: number;
+}
+
+const formatAxisDate = (date: string) =>
+  new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(new Date(`${date}T00:00:00`));
+
+const getRate = (value: number, impressions: number) => {
+  if (impressions === 0) {
+    return 0;
+  }
+
+  return (value / impressions) * 100;
+};
+
+const axisTick = {
+  fontSize: 14,
+  fill: "#667174",
+};
+
+export const CampaignTimeline = ({
+  timeline,
+  title = "Performance over time",
+  description = "See how campaign reach and efficiency changed over time.",
+}: CampaignTimelineProps) => {
+  const chartData: TimelineChartPoint[] = timeline.map((point) => ({
+    ...point,
+    ctr: getRate(point.clicks, point.impressions),
+    engagementRate: getRate(point.engagements, point.impressions),
+  }));
+
+  return (
+    <section className="campaign-timeline">
+      <header className="campaign-timeline__header">
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </header>
+
+      <div className="campaign-timeline__section">
+        <div className="campaign-timeline__section-header">
+          <h3>Reach</h3>
+          <p>Impressions</p>
+        </div>
+
+        <div className="campaign-timeline__chart">
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart
+              data={chartData}
+              margin={{
+                top: 8,
+                right: 16,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid
+                stroke="#edf0f4"
+                strokeDasharray="3 3"
+                vertical={false}
+              />
+
+              <XAxis
+                dataKey="date"
+                tickFormatter={formatAxisDate}
+                tick={axisTick}
+                tickLine={false}
+                axisLine={false}
+                minTickGap={28}
+              />
+
+              <YAxis
+                tickFormatter={(value: number) => formatNumber(value)}
+                tick={axisTick}
+                tickLine={false}
+                axisLine={false}
+                width={72}
+              />
+
+              <Tooltip
+                labelFormatter={(label) => formatAxisDate(String(label))}
+                formatter={(value) => [
+                  formatNumber(Number(value)),
+                  "Impressions",
+                ]}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="impressions"
+                name="Impressions"
+                stroke="#3154ff"
+                strokeWidth={3}
+                dot={false}
+                activeDot={{ r: 5 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-    </div>
 
-    <div className="campaign-timeline__chart">
-      <ResponsiveContainer width="100%" height={360}>
-        <LineChart data={data}>
-          <CartesianGrid stroke="#edf0f6" strokeDasharray="4 4" />
+      <div className="campaign-timeline__divider" />
 
-          <XAxis dataKey="date" tickFormatter={(value: string) => formatDate(value)} />
+      <div className="campaign-timeline__section">
+        <div className="campaign-timeline__section-header">
+          <h3>Efficiency</h3>
+          <p>CTR and engagement rate</p>
+        </div>
 
-          <YAxis tickFormatter={(value: number) => formatNumber(value)} />
+        <div className="campaign-timeline__chart">
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart
+              data={chartData}
+              margin={{
+                top: 8,
+                right: 16,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid
+                stroke="#edf0f4"
+                strokeDasharray="3 3"
+                vertical={false}
+              />
 
-          <Tooltip
-            labelFormatter={(value) => formatDate(String(value))}
-            formatter={(value, name) => [formatNumber(Number(value)), String(name)]}
-          />
+              <XAxis
+                dataKey="date"
+                tickFormatter={formatAxisDate}
+                tick={axisTick}
+                tickLine={false}
+                axisLine={false}
+                minTickGap={28}
+              />
 
-          <Line
-            type="monotone"
-            dataKey="impressions"
-            stroke="#3458ff"
-            strokeWidth={2.5}
-            dot={false}
-          />
+              <YAxis
+                tickFormatter={(value: number) => `${value.toFixed(1)}%`}
+                tick={axisTick}
+                tickLine={false}
+                axisLine={false}
+                width={58}
+              />
 
-          <Line
-            type="monotone"
-            dataKey="clicks"
-            stroke="#7b55ff"
-            strokeWidth={2.5}
-            dot={false}
-          />
+              <Tooltip
+                labelFormatter={(label) => formatAxisDate(String(label))}
+                formatter={(value, name) => [
+                  formatPercentage(Number(value)),
+                  String(name),
+                ]}
+              />
 
-          <Line
-            type="monotone"
-            dataKey="engagements"
-            stroke="#e657a5"
-            strokeWidth={2.5}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </section>
-);
+              <Legend
+                wrapperStyle={{
+                  fontSize: "14px",
+                }}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="ctr"
+                name="CTR"
+                stroke="#7b55ff"
+                strokeWidth={3}
+                dot={false}
+                activeDot={{ r: 5 }}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="engagementRate"
+                name="Engagement rate"
+                stroke="#e657a5"
+                strokeWidth={3}
+                dot={false}
+                activeDot={{ r: 5 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </section>
+  );
+};

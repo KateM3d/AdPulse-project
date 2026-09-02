@@ -82,7 +82,7 @@ export const CampaignPage = () => {
         />
       </section>
 
-      <CampaignTimeline data={timeline} />
+      <CampaignTimeline timeline={timeline} />
 
       <PlatformBreakdown platforms={platforms} />
 

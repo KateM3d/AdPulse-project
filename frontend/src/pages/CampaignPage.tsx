@@ -4,11 +4,8 @@ import { MetricCard } from "../components/MetricCard/MetricCard";
 import { PlatformBreakdown } from "../components/PlatformBreakdown/PlatformBreakdown";
 import { useAds } from "../hooks/useAds";
 import { useCampaign } from "../hooks/useCampaign";
-import {
-  formatDate,
-  formatNumber,
-  formatPercentage,
-} from "../utils/formatters";
+import { formatDate, formatNumber, formatPercentage } from "../utils/formatters";
+import { CTR_TOOLTIP, ENGAGEMENT_RATE_TOOLTIP } from "../utils/metricTooltips";
 
 import "./CampaignPage.scss";
 
@@ -74,11 +71,16 @@ export const CampaignPage = () => {
           value={formatNumber(summary.total_engagements)}
         />
 
-        <MetricCard label="CTR" value={formatPercentage(summary.ctr)} />
+        <MetricCard
+          label="CTR"
+          value={formatPercentage(summary.ctr)}
+          tooltip={CTR_TOOLTIP}
+        />
 
         <MetricCard
           label="Engagement rate"
           value={formatPercentage(summary.engagement_rate)}
+          tooltip={ENGAGEMENT_RATE_TOOLTIP}
         />
       </section>
 

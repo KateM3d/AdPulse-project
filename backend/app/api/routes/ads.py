@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
+from app.core.config import Settings, get_settings
 from app.core.exceptions import AdNotFoundError
 from app.dependencies import (
     get_ad_repository,
@@ -12,7 +13,10 @@ from app.repositories.ad_repository import AdRepository
 from app.repositories.comments_repository import CommentsRepository
 from app.repositories.metrics_repository import MetricsRepository
 from app.schemas.ad import AdDetail, AdSummary
+from app.schemas.ai_insights import AiCampaignInsight, AiInsightContext
 from app.services.ad_service import AdService
+from app.services.ai_insights_service import AiInsightsService
+from app.services.campaign_service import CampaignService
 
 router = APIRouter(prefix="/ads")
 
@@ -81,3 +85,63 @@ def get_ad(
         metrics=metrics,
         comments=comments,
     )
+
+
+@router.post(
+    "/{ad_id}/insights",
+    response_model=AiCampaignInsight,
+    summary="Generate AI ad performance insights",
+    description=(
+        "Analyzes the selected ad against campaign-level performance "
+        "and returns an evidence-based recommendation for the next experiment."
+    ),
+    responses={
+        404: {
+            "description": "Ad not found",
+        },
+        503: {
+            "description": "AI insights temporarily unavailable",
+        },
+    },
+)
+def generate_ad_insights(
+    ad_id: str,
+    ad_repository: Annotated[
+        AdRepository,
+        Depends(get_ad_repository),
+    ],
+    metrics_repository: Annotated[
+        MetricsRepository,
+        Depends(get_metrics_repository),
+    ],
+    comments_repository: Annotated[
+        CommentsRepository,
+        Depends(get_comments_repository),
+    ],
+    settings: Annotated[
+        Settings,
+        Depends(get_settings),
+    ],
+) -> AiCampaignInsight:
+    ad = ad_repository.get_by_id(ad_id)
+
+    if ad is None:
+        raise AdNotFoundError(ad_id)
+
+    metrics = metrics_repository.get_all()
+    comments = comments_repository.get_all()
+
+    ad_detail = AdService().get_ad_detail(
+        ad=ad,
+        metrics=metrics,
+        comments=comments,
+    )
+
+    campaign_summary = CampaignService().get_summary(metrics)
+
+    context = AiInsightContext(
+        selected_ad=ad_detail,
+        campaign_benchmarks=campaign_summary,
+    )
+
+    return AiInsightsService(settings).analyze(context)

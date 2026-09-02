@@ -190,6 +190,10 @@ describe("AdDetailPage", () => {
     expect(
       screen.getByRole("heading", { name: "Audience feedback" }),
     ).toBeInTheDocument();
+    expect(screen.getByText("AI Campaign Analyst")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Generate AI analysis" }),
+    ).toBeInTheDocument();
   });
 
   it("provides navigation back to the campaign", async () => {

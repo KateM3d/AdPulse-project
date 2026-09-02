@@ -7,7 +7,11 @@ from fastapi.responses import JSONResponse
 
 from app.api.router import api_router
 from app.core.config import get_settings
-from app.core.exceptions import AdNotFoundError, DataLoadingError
+from app.core.exceptions import (
+    AdNotFoundError,
+    AiInsightsUnavailableError,
+    DataLoadingError,
+)
 from app.dependencies import (
     get_ad_repository,
     get_comments_repository,
@@ -71,5 +75,16 @@ async def data_loading_error_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=500,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(AiInsightsUnavailableError)
+async def ai_insights_unavailable_handler(
+    _request: Request,
+    exc: AiInsightsUnavailableError,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=503,
         content={"detail": str(exc)},
     )

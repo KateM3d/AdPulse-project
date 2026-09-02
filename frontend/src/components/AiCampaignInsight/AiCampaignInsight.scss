@@ -1,0 +1,105 @@
+.ai-campaign-insight {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 40px;
+  padding: 28px;
+
+  border: 1px solid rgba(49, 84, 255, 0.24);
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(49, 84, 255, 0.18) 0%,
+    rgba(49, 84, 255, 0.1) 100%
+  );
+
+  &__label {
+    margin: 0;
+
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    color: var(--color-primary);
+  }
+
+  &__card {
+    padding: 20px;
+
+    border: 1px solid rgba(49, 84, 255, 0.12);
+    border-radius: 12px;
+
+    background: #fff;
+
+    p {
+      margin: 0;
+
+      line-height: 1.55;
+
+      color: var(--color-text-secondary);
+    }
+
+    .ai-campaign-insight__label + p {
+      margin-top: 10px;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+
+      color: var(--color-text-secondary);
+    }
+
+    li {
+      line-height: 1.5;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  &__experiment {
+    border-color: rgba(49, 84, 255, 0.2);
+  }
+
+  &__experiment-text {
+    margin-top: 10px !important;
+
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5 !important;
+
+    color: var(--color-text) !important;
+  }
+
+  &__experiment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+
+    p:not(.ai-campaign-insight__label) {
+      margin-top: 8px;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    &__columns,
+    &__experiment-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

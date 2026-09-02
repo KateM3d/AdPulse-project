@@ -14,21 +14,25 @@ import { formatDate, formatNumber } from "../../utils/formatters";
 import "./CampaignTimeline.scss";
 
 interface CampaignTimelineProps {
-  data: TimelinePoint[];
+  timeline: TimelinePoint[];
+  title?: string;
 }
 
-export const CampaignTimeline = ({ data }: CampaignTimelineProps) => (
+export const CampaignTimeline = ({
+  timeline,
+  title = "Campaign timeline",
+}: CampaignTimelineProps) => (
   <section className="campaign-timeline">
     <div className="campaign-timeline__header">
       <div>
         <span className="campaign-timeline__eyebrow">Performance over time</span>
-        <h2>Campaign timeline</h2>
+        <h2>{title}</h2>
       </div>
     </div>
 
     <div className="campaign-timeline__chart">
       <ResponsiveContainer width="100%" height={360}>
-        <LineChart data={data}>
+        <LineChart data={timeline}>
           <CartesianGrid stroke="#edf0f6" strokeDasharray="4 4" />
 
           <XAxis dataKey="date" tickFormatter={(value: string) => formatDate(value)} />

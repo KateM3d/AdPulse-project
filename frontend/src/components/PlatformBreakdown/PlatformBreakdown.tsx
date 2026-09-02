@@ -5,14 +5,18 @@ import "./PlatformBreakdown.scss";
 
 interface PlatformBreakdownProps {
   platforms: PlatformSummary[];
+  title?: string;
 }
 
-export const PlatformBreakdown = ({ platforms }: PlatformBreakdownProps) => (
+export const PlatformBreakdown = ({
+  platforms,
+  title = "Platform breakdown",
+}: PlatformBreakdownProps) => (
   <section className="platform-breakdown">
     <div className="platform-breakdown__header">
       <div>
         <span className="platform-breakdown__eyebrow">Channel performance</span>
-        <h2>Platform breakdown</h2>
+        <h2>{title}</h2>
       </div>
     </div>
 

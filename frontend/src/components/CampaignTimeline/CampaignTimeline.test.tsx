@@ -16,11 +16,26 @@ const timeline: TimelinePoint[] = [
 
 describe("CampaignTimeline", () => {
   it("renders the timeline heading", () => {
-    render(<CampaignTimeline data={timeline} />);
+    render(<CampaignTimeline timeline={timeline} />);
 
     expect(
       screen.getByRole("heading", {
         name: "Campaign timeline",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a custom title", () => {
+    render(
+      <CampaignTimeline
+        timeline={timeline}
+        title="Ad performance over time"
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Ad performance over time",
       }),
     ).toBeInTheDocument();
   });

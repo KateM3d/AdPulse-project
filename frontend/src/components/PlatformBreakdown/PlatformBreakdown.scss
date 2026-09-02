@@ -1,4 +1,6 @@
 .platform-breakdown {
+  container-type: inline-size;
+
   margin-top: 2rem;
 
   &__header {
@@ -82,6 +84,12 @@
       font-weight: 700;
 
       color: #293456;
+    }
+  }
+
+  @container (max-width: 640px) {
+    &__grid {
+      grid-template-columns: 1fr;
     }
   }
 

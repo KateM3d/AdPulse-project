@@ -38,4 +38,19 @@ describe("PlatformBreakdown", () => {
     expect(screen.getByText("1.25%")).toBeInTheDocument();
     expect(screen.getByText("2.78%")).toBeInTheDocument();
   });
+
+  it("renders a custom title", () => {
+    render(
+      <PlatformBreakdown
+        platforms={platforms}
+        title="Performance by platform"
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Performance by platform",
+      }),
+    ).toBeInTheDocument();
+  });
 });

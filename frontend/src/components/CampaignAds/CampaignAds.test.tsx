@@ -65,4 +65,16 @@ describe("CampaignAds", () => {
     expect(links[0]).toHaveAttribute("href", "/ads/first-ad");
     expect(links[1]).toHaveAttribute("href", "/ads/second-ad");
   });
+
+  it("shows an empty state when there are no campaign ads", () => {
+    render(
+      <MemoryRouter>
+        <CampaignAds ads={[]} />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByText("No campaign ads available."),
+    ).toBeInTheDocument();
+  });
 });

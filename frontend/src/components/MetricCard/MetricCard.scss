@@ -1,4 +1,6 @@
 .metric-card {
+  position: relative;
+  z-index: 0;
   min-width: 0;
   padding: 1.4rem 1.5rem;
 
@@ -6,6 +8,13 @@
   border-radius: var(--radius-md);
 
   background: var(--color-surface);
+
+  overflow: visible;
+
+  &:hover,
+  &:focus-within {
+    z-index: 1;
+  }
 
   &__label {
     margin: 0;

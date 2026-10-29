@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Small-business payroll checklist: clipboard illustration for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#f0fdf4"/>
+  <circle cx="160" cy="160" r="220" fill="#dcfce7"/>
+  <g transform="translate(340 120)">
+    <rect width="400" height="500" rx="32" fill="#ffffff" stroke="#16a34a" stroke-width="12"/>
+    <rect x="120" y="-24" width="160" height="64" rx="20" fill="#16a34a"/>
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60 140 l24 24 l44 -48" fill="none" stroke="#16a34a" stroke-width="16"/>
+      <line x1="170" y1="140" x2="340" y2="140" stroke="#bbf7d0" stroke-width="22"/>
+      <path d="M60 260 l24 24 l44 -48" fill="none" stroke="#16a34a" stroke-width="16"/>
+      <line x1="170" y1="260" x2="320" y2="260" stroke="#bbf7d0" stroke-width="22"/>
+      <rect x="60" y="350" width="64" height="64" rx="12" fill="none" stroke="#86efac" stroke-width="10"/>
+      <line x1="170" y1="382" x2="300" y2="382" stroke="#bbf7d0" stroke-width="22"/>
+    </g>
+  </g>
+  <text x="90" y="780" font-family="Inter, Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#14532d">The small-business</text>
+  <text x="90" y="860" font-family="Inter, Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#14532d">payroll checklist</text>
+  <text x="90" y="920" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#166534">Filings, deadlines, and records. Free download.</text>
+  <g transform="translate(90 975)" fill="#15803d">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#15803d" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

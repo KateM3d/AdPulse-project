@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import type { TimelinePoint } from "../../types/api";
+import { chartColors } from "../../utils/chartTheme";
 import { formatNumber, formatPercentage } from "../../utils/formatters";
 
 import "./CampaignTimeline.scss";
@@ -40,7 +41,7 @@ const getRate = (value: number, impressions: number) => {
 
 const axisTick = {
   fontSize: 14,
-  fill: "#667174",
+  fill: chartColors.axis,
 };
 
 export const CampaignTimeline = ({
@@ -53,6 +54,19 @@ export const CampaignTimeline = ({
     ctr: getRate(point.clicks, point.impressions),
     engagementRate: getRate(point.engagements, point.impressions),
   }));
+
+  if (chartData.length === 0) {
+    return (
+      <section className="campaign-timeline">
+        <header className="campaign-timeline__header">
+          <h2>{title}</h2>
+          <p>{description}</p>
+        </header>
+
+        <p className="chart-empty">No performance data recorded yet.</p>
+      </section>
+    );
+  }
 
   return (
     <section className="campaign-timeline">
@@ -79,7 +93,7 @@ export const CampaignTimeline = ({
               }}
             >
               <CartesianGrid
-                stroke="#edf0f4"
+                stroke={chartColors.grid}
                 strokeDasharray="3 3"
                 vertical={false}
               />
@@ -113,7 +127,7 @@ export const CampaignTimeline = ({
                 type="monotone"
                 dataKey="impressions"
                 name="Impressions"
-                stroke="#3154ff"
+                stroke={chartColors.reach}
                 strokeWidth={3}
                 dot={false}
                 activeDot={{ r: 5 }}
@@ -143,7 +157,7 @@ export const CampaignTimeline = ({
               }}
             >
               <CartesianGrid
-                stroke="#edf0f4"
+                stroke={chartColors.grid}
                 strokeDasharray="3 3"
                 vertical={false}
               />
@@ -183,7 +197,7 @@ export const CampaignTimeline = ({
                 type="monotone"
                 dataKey="ctr"
                 name="CTR"
-                stroke="#7b55ff"
+                stroke={chartColors.ctr}
                 strokeWidth={3}
                 dot={false}
                 activeDot={{ r: 5 }}
@@ -193,7 +207,7 @@ export const CampaignTimeline = ({
                 type="monotone"
                 dataKey="engagementRate"
                 name="Engagement rate"
-                stroke="#e657a5"
+                stroke={chartColors.engagement}
                 strokeWidth={3}
                 dot={false}
                 activeDot={{ r: 5 }}

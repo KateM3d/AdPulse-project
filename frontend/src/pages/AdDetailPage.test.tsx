@@ -1,10 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAd, getAds } from "../api/ads";
-import type { AdDetail, AdSummary } from "../types/api";
+import { generateAdInsights, getInsightsProvider } from "../api/insights";
+import type { AdDetail, AdInsights, AdSummary } from "../types/api";
 import { AdDetailPage } from "./AdDetailPage";
 
 vi.mock("../api/ads", () => ({
@@ -12,14 +14,21 @@ vi.mock("../api/ads", () => ({
   getAds: vi.fn(),
 }));
 
+vi.mock("../api/insights", () => ({
+  generateAdInsights: vi.fn(),
+  getInsightsProvider: vi.fn(),
+}));
+
 const mockedGetAd = vi.mocked(getAd);
 const mockedGetAds = vi.mocked(getAds);
+const mockedGenerateAdInsights = vi.mocked(generateAdInsights);
+const mockedGetInsightsProvider = vi.mocked(getInsightsProvider);
 
 const ad = {
   ad_id: "payroll_in_minutes",
-  title: "Tidewell Payroll",
+  title: "Payroll in four minutes",
   body: "Run payroll for your whole team in about four minutes.",
-  image: "payroll_in_minutes.png",
+  image: "payroll_in_minutes.svg",
 
   total_impressions: 120000,
   total_clicks: 2400,
@@ -123,6 +132,11 @@ describe("AdDetailPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockedGetAds.mockResolvedValue(ads);
+    mockedGetInsightsProvider.mockResolvedValue({
+      provider: "demo",
+      is_live: false,
+      model: null,
+    });
   });
 
   it("loads the requested ad", async () => {
@@ -138,7 +152,7 @@ describe("AdDetailPage", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Tidewell Payroll",
+        name: "Payroll in four minutes",
         level: 1,
       }),
     ).toBeInTheDocument();
@@ -151,14 +165,14 @@ describe("AdDetailPage", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Tidewell Payroll",
+        name: "Payroll in four minutes",
         level: 1,
       }),
     ).toBeInTheDocument();
 
     expect(
-      screen.getByAltText("Tidewell Payroll creative"),
-    ).toHaveAttribute("src", "/ads/payroll_in_minutes.png");
+      screen.getByAltText("Payroll in four minutes creative"),
+    ).toHaveAttribute("src", "/ads/payroll_in_minutes.svg");
 
     expect(
       screen.getByText(
@@ -192,7 +206,7 @@ describe("AdDetailPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("AI Campaign Analyst")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Generate AI analysis" }),
+      screen.getByRole("button", { name: "Generate insights" }),
     ).toBeInTheDocument();
   });
 
@@ -235,5 +249,65 @@ describe("AdDetailPage", () => {
     ).toBeInTheDocument();
 
     expect(screen.getByRole("alert")).toHaveTextContent("Ad not found");
+  });
+
+  it("generates demo insights on request and labels them as samples", async () => {
+    const user = userEvent.setup();
+    const insight = {
+      summary: "This is one of the campaign's strongest ads.",
+      strengths: ["CTR is above average."],
+      risks: ["No material risks stand out."],
+      recommended_next_experiment: "Increase this ad's budget by 25%.",
+      hypothesis: "CTR will hold at higher spend.",
+      metrics_to_measure: ["CTR at increased spend"],
+      provider: "demo",
+      model: null,
+    } satisfies AdInsights;
+
+    mockedGetAd.mockResolvedValue(ad);
+    mockedGenerateAdInsights.mockResolvedValue(insight);
+
+    renderPage();
+
+    expect(
+      await screen.findByText("Demo AI · Sample insights"),
+    ).toBeInTheDocument();
+    expect(mockedGenerateAdInsights).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Generate insights" }));
+
+    expect(
+      await screen.findByText("This is one of the campaign's strongest ads."),
+    ).toBeInTheDocument();
+    expect(mockedGenerateAdInsights).toHaveBeenCalledWith("payroll_in_minutes");
+    expect(
+      screen.getByRole("region", { name: "Recommended next experiment" }),
+    ).toHaveTextContent("Increase this ad's budget by 25%.");
+    expect(screen.getByText(/No language model was used/)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Regenerate insights" }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the backend reason when insight generation fails", async () => {
+    const user = userEvent.setup();
+
+    mockedGetAd.mockResolvedValue(ad);
+    mockedGenerateAdInsights.mockRejectedValue(
+      new Error("Live AI insights are temporarily unavailable"),
+    );
+
+    renderPage();
+
+    await user.click(
+      await screen.findByRole("button", { name: "Generate insights" }),
+    );
+
+    expect(
+      await screen.findByText("Live AI insights are temporarily unavailable"),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Insights are temporarily unavailable.",
+    );
   });
 });

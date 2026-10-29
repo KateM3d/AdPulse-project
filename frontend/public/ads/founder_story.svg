@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Why we built Tidewell: abstract founders illustration for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#fdf2f8"/>
+  <circle cx="900" cy="140" r="200" fill="#fce7f3"/>
+  <g transform="translate(540 600)">
+    <ellipse cy="10" rx="380" ry="40" fill="#fbcfe8"/>
+    <g transform="translate(-130 0)">
+      <rect x="-110" y="-300" width="220" height="300" rx="110" fill="#db2777"/>
+      <circle cy="-380" r="90" fill="#9d174d"/>
+    </g>
+    <g transform="translate(130 0)">
+      <rect x="-110" y="-270" width="220" height="270" rx="110" fill="#f472b6"/>
+      <circle cy="-345" r="85" fill="#be185d"/>
+    </g>
+    <path d="M-30 -470 q30 -40 60 0 q-30 40 -60 0z" fill="#db2777" transform="translate(0 -30)"/>
+  </g>
+  <text x="90" y="800" font-family="Inter, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#500724">Why we built Tidewell</text>
+  <text x="90" y="870" font-family="Inter, Helvetica, Arial, sans-serif" font-size="36" fill="#831843">Fixing payroll for teams under fifty.</text>
+  <g transform="translate(90 960)" fill="#be185d">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#be185d" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

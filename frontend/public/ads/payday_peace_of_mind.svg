@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Payday, minus the panic: calm calendar illustration for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#fff4e6"/>
+  <path d="M0 640 Q270 560 540 640 T1080 640 V1080 H0 Z" fill="#fed7aa"/>
+  <g transform="translate(330 170)">
+    <rect width="420" height="400" rx="36" fill="#ffffff" stroke="#f97316" stroke-width="12"/>
+    <rect width="420" height="96" rx="36" fill="#f97316"/>
+    <rect y="60" width="420" height="36" fill="#f97316"/>
+    <rect x="90" y="-30" width="24" height="70" rx="12" fill="#7c2d12"/>
+    <rect x="306" y="-30" width="24" height="70" rx="12" fill="#7c2d12"/>
+    <circle cx="210" cy="250" r="96" fill="#ffedd5"/>
+    <path d="M160 252 L198 290 L268 214" fill="none" stroke="#ea580c" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="90" y="830" font-family="Inter, Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#431407">Payday, minus the panic</text>
+  <text x="90" y="900" font-family="Inter, Helvetica, Arial, sans-serif" font-size="36" fill="#7c2d12">Reminders, approvals, and payslips on autopilot.</text>
+  <g transform="translate(90 970)" fill="#c2410c">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#c2410c" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

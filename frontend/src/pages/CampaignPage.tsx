@@ -1,6 +1,7 @@
 import { CampaignAds } from "../components/CampaignAds/CampaignAds";
 import { CampaignTimeline } from "../components/CampaignTimeline/CampaignTimeline";
 import { MetricCard } from "../components/MetricCard/MetricCard";
+import { PageError, PageLoading } from "../components/PageState/PageState";
 import { PlatformBreakdown } from "../components/PlatformBreakdown/PlatformBreakdown";
 import { useAds } from "../hooks/useAds";
 import { useCampaign } from "../hooks/useCampaign";
@@ -16,7 +17,7 @@ export const CampaignPage = () => {
   if (campaignQuery.isPending || adsQuery.isPending) {
     return (
       <main className="campaign-page">
-        <p>Loading campaign data...</p>
+        <PageLoading label="Loading campaign data..." />
       </main>
     );
   }
@@ -26,11 +27,16 @@ export const CampaignPage = () => {
 
     return (
       <main className="campaign-page">
-        <h1>Campaign Dashboard</h1>
-
-        <p role="alert">
-          {error instanceof Error ? error.message : "Unable to load campaign data"}
-        </p>
+        <PageError
+          title="Unable to load campaign"
+          message={
+            error instanceof Error ? error.message : "Unable to load campaign data"
+          }
+          onRetry={() => {
+            void campaignQuery.refetch();
+            void adsQuery.refetch();
+          }}
+        />
       </main>
     );
   }
@@ -42,10 +48,13 @@ export const CampaignPage = () => {
     <main className="campaign-page">
       <header className="campaign-page__header">
         <div>
+          <p className="campaign-page__eyebrow">Campaign overview</p>
+
           <h1>Campaign Performance</h1>
 
           <p className="campaign-page__subtitle">
-            Track campaign reach, engagement, and performance across channels.
+            Track reach, engagement, and efficiency across channels, then dig
+            into individual ads for recommended next experiments.
           </p>
         </div>
 

@@ -66,3 +66,17 @@ export type AiCampaignInsight = {
   hypothesis: string;
   metrics_to_measure: string[];
 };
+
+/** "demo" = deterministic rule-based sample content; "openai" = live LLM output. */
+export type InsightProvider = "demo" | "openai";
+
+export type AdInsights = AiCampaignInsight & {
+  provider: InsightProvider;
+  model: string | null;
+};
+
+export type InsightsProviderStatus = {
+  provider: InsightProvider;
+  is_live: boolean;
+  model: string | null;
+};

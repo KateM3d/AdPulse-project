@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Pay contractors anywhere: globe with payment routes for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#1e1b4b"/>
+  <g transform="translate(540 420)" fill="none" stroke="#a5b4fc" stroke-width="10">
+    <circle r="250" fill="#312e81"/>
+    <ellipse rx="110" ry="250"/>
+    <ellipse rx="250" ry="90"/>
+    <line x1="-250" y1="0" x2="250" y2="0"/>
+    <line x1="0" y1="-250" x2="0" y2="250"/>
+  </g>
+  <g fill="none" stroke="#fbbf24" stroke-width="9" stroke-linecap="round" stroke-dasharray="4 22">
+    <path d="M330 330 Q540 120 760 360"/>
+    <path d="M360 560 Q560 700 740 500"/>
+  </g>
+  <g fill="#fbbf24">
+    <circle cx="330" cy="330" r="22"/>
+    <circle cx="760" cy="360" r="22"/>
+    <circle cx="360" cy="560" r="22"/>
+    <circle cx="740" cy="500" r="22"/>
+  </g>
+  <text x="90" y="830" font-family="Inter, Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#eef2ff">Pay contractors anywhere</text>
+  <text x="90" y="900" font-family="Inter, Helvetica, Arial, sans-serif" font-size="36" fill="#c7d2fe">40+ countries. One dashboard.</text>
+  <g transform="translate(90 970)" fill="#a5b4fc">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#a5b4fc" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

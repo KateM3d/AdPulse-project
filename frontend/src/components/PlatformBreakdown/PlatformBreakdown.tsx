@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import type { PlatformSummary } from "../../types/api";
+import { chartColors } from "../../utils/chartTheme";
 import { formatNumber, formatPercentage } from "../../utils/formatters";
 
 import "./PlatformBreakdown.scss";
@@ -69,6 +70,21 @@ export const PlatformBreakdown = ({
     value: platform[metric],
   }));
 
+  if (platforms.length === 0) {
+    return (
+      <section className="platform-breakdown">
+        <header className="platform-breakdown__header">
+          <div>
+            <h2>{title}</h2>
+            <p>{description}</p>
+          </div>
+        </header>
+
+        <p className="chart-empty">No platform data available yet.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="platform-breakdown">
       <header className="platform-breakdown__header">
@@ -109,7 +125,7 @@ export const PlatformBreakdown = ({
             }}
           >
             <CartesianGrid
-              stroke="#edf0f4"
+              stroke={chartColors.grid}
               strokeDasharray="3 3"
               horizontal={false}
             />
@@ -119,7 +135,7 @@ export const PlatformBreakdown = ({
               tickFormatter={selectedMetric.formatValue}
               tick={{
                 fontSize: 14,
-                fill: "#667174",
+                fill: chartColors.axis,
               }}
               tickLine={false}
               axisLine={false}
@@ -131,7 +147,7 @@ export const PlatformBreakdown = ({
               width={90}
               tick={{
                 fontSize: 14,
-                fill: "#1f2729",
+                fill: "#12202b",
                 fontWeight: 600,
               }}
               tickLine={false}
@@ -139,7 +155,7 @@ export const PlatformBreakdown = ({
             />
 
             <Tooltip
-              cursor={{ fill: "#f6f7fb" }}
+              cursor={{ fill: chartColors.cursor }}
               formatter={(value) => [
                 selectedMetric.formatValue(Number(value)),
                 selectedMetric.label,
@@ -149,7 +165,7 @@ export const PlatformBreakdown = ({
             <Bar
               dataKey="value"
               name={selectedMetric.label}
-              fill="#3154ff"
+              fill={chartColors.reach}
               radius={[0, 6, 6, 0]}
               maxBarSize={32}
             />

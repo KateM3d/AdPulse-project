@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import type { AiCampaignInsight } from "../../types/api";
+import type { AdInsights } from "../../types/api";
 import { AiCampaignAnalyst } from "./AiCampaignAnalyst";
 
 const insight = {
@@ -11,7 +11,9 @@ const insight = {
   recommended_next_experiment: "Test clearer ad copy on Meta.",
   hypothesis: "Clearer copy will improve Meta CTR.",
   metrics_to_measure: ["CTR on Meta", "Engagement rate on Meta"],
-} satisfies AiCampaignInsight;
+  provider: "demo",
+  model: null,
+} satisfies AdInsights;
 
 describe("AiCampaignAnalyst", () => {
   it("shows the initial generate CTA", () => {
@@ -33,8 +35,52 @@ describe("AiCampaignAnalyst", () => {
       screen.getByText(/Generate an evidence-based analysis/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Generate AI analysis" }),
+      screen.getByRole("button", { name: "Generate insights" }),
     ).toBeInTheDocument();
+  });
+
+  it("labels demo mode before anything is generated", () => {
+    render(
+      <AiCampaignAnalyst
+        providerStatus={{ provider: "demo", is_live: false, model: null }}
+        isPending={false}
+        isError={false}
+        onGenerate={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("Demo AI · Sample insights")).toBeInTheDocument();
+    expect(
+      screen.getByText(/no AI model or API key is involved/i),
+    ).toBeInTheDocument();
+  });
+
+  it("labels live AI with the configured model", () => {
+    render(
+      <AiCampaignAnalyst
+        providerStatus={{ provider: "openai", is_live: true, model: "gpt-4o-mini" }}
+        isPending={false}
+        isError={false}
+        onGenerate={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("Live AI · gpt-4o-mini")).toBeInTheDocument();
+    expect(screen.queryByText(/Demo AI/)).not.toBeInTheDocument();
+  });
+
+  it("prefers the provider reported by the generated insight", () => {
+    render(
+      <AiCampaignAnalyst
+        insight={insight}
+        providerStatus={{ provider: "openai", is_live: true, model: "gpt-4o-mini" }}
+        isPending={false}
+        isError={false}
+        onGenerate={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("Demo AI · Sample insights")).toBeInTheDocument();
   });
 
   it("calls onGenerate when the CTA is clicked", async () => {
@@ -49,9 +95,7 @@ describe("AiCampaignAnalyst", () => {
       />,
     );
 
-    await user.click(
-      screen.getByRole("button", { name: "Generate AI analysis" }),
-    );
+    await user.click(screen.getByRole("button", { name: "Generate insights" }));
 
     expect(onGenerate).toHaveBeenCalledTimes(1);
   });
@@ -66,16 +110,14 @@ describe("AiCampaignAnalyst", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Generating analysis…" }),
+      screen.getByRole("button", { name: "Generating insights…" }),
     ).toBeDisabled();
-    expect(
-      screen.getByText(
-        "Analyzing campaign performance and audience signals…",
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Analyzing campaign performance and audience signals…",
+    );
   });
 
-  it("shows regenerate when an insight already exists", () => {
+  it("shows regenerate and a success message when an insight exists", () => {
     render(
       <AiCampaignAnalyst
         insight={insight}
@@ -86,11 +128,30 @@ describe("AiCampaignAnalyst", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Regenerate analysis" }),
+      screen.getByRole("button", { name: "Regenerate insights" }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Insights are ready below.")).toBeInTheDocument();
     expect(
       screen.queryByText(/Generate an evidence-based analysis/i),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows the server error message when generation fails", () => {
+    render(
+      <AiCampaignAnalyst
+        isPending={false}
+        isError={true}
+        errorMessage="Live AI insights are temporarily unavailable"
+        onGenerate={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Insights are temporarily unavailable.",
+    );
+    expect(
+      screen.getByText("Live AI insights are temporarily unavailable"),
+    ).toBeInTheDocument();
   });
 
   it("keeps the previous insight messaging when a refresh fails", () => {
@@ -104,9 +165,7 @@ describe("AiCampaignAnalyst", () => {
     );
 
     expect(
-      screen.getByText(
-        "Unable to refresh analysis. Showing the previous result.",
-      ),
+      screen.getByText("Unable to refresh insights. Showing the previous result."),
     ).toBeInTheDocument();
   });
 });

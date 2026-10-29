@@ -1,0 +1,113 @@
+@keyframes page-state-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.page-state {
+  &__label {
+    margin: 0 0 1.5rem;
+
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  &__skeleton {
+    display: grid;
+    gap: 1rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+
+    @media (max-width: 760px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__bar {
+    display: block;
+
+    border-radius: var(--radius-md);
+
+    background: linear-gradient(
+      90deg,
+      var(--color-border-light) 25%,
+      #ffffff 50%,
+      var(--color-border-light) 75%
+    );
+    background-size: 200% 100%;
+
+    animation: page-state-shimmer 1.4s ease-in-out infinite;
+
+    &--title {
+      width: min(420px, 70%);
+      height: 44px;
+    }
+
+    &--card {
+      height: 104px;
+    }
+
+    &--chart {
+      height: 280px;
+    }
+  }
+
+  &--error {
+    max-width: 640px;
+    padding: 2rem;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+
+    h1 {
+      margin: 0;
+
+      font-size: var(--font-size-section);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0.75rem 0 0;
+      padding: 0.75rem 1rem;
+
+      border-radius: var(--radius-sm);
+
+      background: var(--color-danger-soft);
+
+      color: var(--color-danger);
+    }
+  }
+
+  &__retry {
+    min-height: 44px;
+    margin-top: 1.25rem;
+    padding: 0.6rem 1.1rem;
+
+    border: 0;
+    border-radius: var(--radius-sm);
+
+    background: var(--color-primary);
+
+    font-weight: 600;
+    color: #fff;
+
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-primary-dark);
+    }
+  }
+}

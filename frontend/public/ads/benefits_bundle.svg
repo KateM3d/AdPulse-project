@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Benefits without the paperwork: shield and heart illustration for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#eff6ff"/>
+  <rect x="660" y="80" width="340" height="340" rx="60" fill="#dbeafe" transform="rotate(12 830 250)"/>
+  <g transform="translate(540 400)">
+    <path d="M0 -270 L220 -190 V20 C220 160 110 240 0 290 C-110 240 -220 160 -220 20 V-190 Z" fill="#2563eb"/>
+    <path d="M0 -210 L170 -150 V20 C170 125 90 190 0 230 C-90 190 -170 125 -170 20 V-150 Z" fill="#3b82f6"/>
+    <path d="M0 110 C-120 30 -120 -90 -50 -90 C-20 -90 0 -60 0 -40 C0 -60 20 -90 50 -90 C120 -90 120 30 0 110 Z" fill="#eff6ff"/>
+  </g>
+  <text x="90" y="780" font-family="Inter, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#172554">Benefits without</text>
+  <text x="90" y="855" font-family="Inter, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#172554">the paperwork</text>
+  <text x="90" y="915" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#1e3a8a">Health, pension, and wellbeing in a few clicks.</text>
+  <g transform="translate(90 975)" fill="#1d4ed8">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#1d4ed8" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

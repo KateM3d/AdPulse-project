@@ -1,36 +1,58 @@
 :root {
   --font-family:
     Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
     "Helvetica Neue",
-    Helvetica,
     Arial,
     sans-serif;
 
-  --color-background: #f7f7f5;
+  --color-background: #f4f6f8;
   --color-surface: #ffffff;
+  --color-surface-muted: #f8fafb;
 
-  --color-text: #172326;
-  --color-text-secondary: #667174;
-  --color-text-muted: #8b9395;
+  --color-text: #12202b;
+  --color-text-secondary: #556372;
+  --color-text-muted: #7b8794;
 
-  // Cobalt blue primary
-  --color-primary: #3154ff;
-  --color-primary-dark: #1738e8;
-  --color-primary-soft: #eef1ff;
+  // AdPulse brand: deep teal with a coral "pulse" accent
+  --color-primary: #0f766e;
+  --color-primary-dark: #115e59;
+  --color-primary-soft: #e6f4f2;
+  --color-accent: #e8604f;
+  --color-accent-soft: #fdecea;
+  --color-focus: rgba(15, 118, 110, 0.35);
 
-  --color-border: #e5e8e8;
-  --color-border-light: #eff1f1;
+  --color-chart-reach: #0f766e;
+  --color-chart-ctr: #6366f1;
+  --color-chart-engagement: #e8604f;
+
+  --color-warning-soft: #fff7e6;
+  --color-warning-text: #8a5a00;
+  --color-danger: #b42318;
+  --color-danger-soft: #fef3f2;
+
+  --color-border: #e2e8ee;
+  --color-border-light: #eef2f5;
 
   // Never smaller than 14px
   --font-size-xs: 14px;
   --font-size-sm: 14px;
   --font-size-body: 16px;
-  --font-size-section: 24px;
-  --font-size-page: clamp(36px, 4vw, 52px);
+  --font-size-section: 22px;
+  --font-size-page: clamp(30px, 3.4vw, 42px);
 
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 14px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px rgba(18, 32, 43, 0.06);
+  --shadow-md:
+    0 1px 2px rgba(18, 32, 43, 0.05),
+    0 6px 18px rgba(18, 32, 43, 0.06);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -64,27 +86,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-body::before {
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  right: 0;
-  left: 0;
-
-  height: 8px;
-
-  background: linear-gradient(
-    90deg,
-    #3154ff 0%,
-    #3154ff 35%,
-    #168df3 70%,
-    #42d6e8 100%
-  );
-
-  content: "";
-  pointer-events: none;
-}
-
 button,
 input,
 textarea,
@@ -96,13 +97,33 @@ a {
   color: inherit;
 }
 
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+
+  border: 0;
+
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .page-title {
   margin: 0;
 
   font-size: var(--font-size-page);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.045em;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
 
   color: var(--color-text);
 }
@@ -126,5 +147,28 @@ a {
     line-height: 1.5;
 
     color: var(--color-text-secondary);
+  }
+}
+
+.chart-empty {
+  margin: 0;
+  padding: 2.5rem 1rem;
+
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface-muted);
+
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

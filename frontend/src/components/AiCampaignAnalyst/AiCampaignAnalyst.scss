@@ -1,14 +1,17 @@
+@keyframes ai-campaign-analyst-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .ai-campaign-analyst {
-  margin-top: 24px;
-  padding: 22px;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
 
-  border-radius: 14px;
+  border: 1px solid #cfe7e3;
+  border-radius: var(--radius-lg);
 
-  background: linear-gradient(
-    135deg,
-    rgba(49, 84, 255, 0.22),
-    rgba(49, 84, 255, 0.1)
-  );
+  background: linear-gradient(135deg, #eef8f6 0%, #f7fbfa 60%, #fdf3f1 100%);
 
   &__header {
     display: flex;
@@ -27,6 +30,13 @@
     }
   }
 
+  &__eyebrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+  }
+
   &__eyebrow {
     margin: 0;
 
@@ -40,10 +50,11 @@
 
   &__button {
     flex-shrink: 0;
-    padding: 11px 16px;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
 
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 
     background: var(--color-primary);
 
@@ -56,26 +67,25 @@
     cursor: pointer;
 
     &:hover:not(:disabled) {
-      filter: brightness(0.96);
+      background: var(--color-primary-dark);
     }
 
     &:disabled {
-      opacity: 0.65;
-      cursor: wait;
-    }
-
-    &:focus-visible {
-      outline: 3px solid rgba(49, 84, 255, 0.25);
-      outline-offset: 3px;
+      opacity: 0.7;
+      cursor: progress;
     }
   }
 
   &__intro-card {
-    margin-top: 16px;
-    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 
-    border: 1px solid rgba(49, 84, 255, 0.12);
-    border-radius: 12px;
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 
     background: #fff;
 
@@ -87,12 +97,46 @@
 
       color: var(--color-text-secondary);
     }
+
+    &--pending {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    &--error {
+      border-color: #f5c2bd;
+
+      background: var(--color-danger-soft);
+    }
+
+    &--success p {
+      font-weight: 600;
+      color: var(--color-primary-dark);
+    }
+  }
+
+  &__spinner {
+    flex-shrink: 0;
+
+    width: 18px;
+    height: 18px;
+
+    border: 3px solid var(--color-primary-soft);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+
+    animation: ai-campaign-analyst-spin 0.8s linear infinite;
   }
 
   &__error {
     font-weight: 600;
 
-    color: var(--color-text);
+    color: var(--color-danger) !important;
+  }
+
+  &__error-detail {
+    color: var(--color-text-secondary);
   }
 
   @media (max-width: 560px) {

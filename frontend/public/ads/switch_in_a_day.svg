@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="t">
+  <title id="t">Switch payroll providers in a day: data transfer illustration for the fictional Tidewell brand</title>
+  <rect width="1080" height="1080" fill="#fefce8"/>
+  <circle cx="140" cy="900" r="260" fill="#fef9c3"/>
+  <g transform="translate(150 230)">
+    <rect width="280" height="340" rx="28" fill="#ffffff" stroke="#a16207" stroke-width="10" stroke-dasharray="18 14"/>
+    <g fill="#fde68a">
+      <rect x="40" y="60" width="200" height="34" rx="10"/>
+      <rect x="40" y="130" width="160" height="34" rx="10"/>
+      <rect x="40" y="200" width="180" height="34" rx="10"/>
+    </g>
+  </g>
+  <g transform="translate(650 230)">
+    <rect width="280" height="340" rx="28" fill="#ca8a04"/>
+    <g fill="#fef08a">
+      <rect x="40" y="60" width="200" height="34" rx="10"/>
+      <rect x="40" y="130" width="160" height="34" rx="10"/>
+      <rect x="40" y="200" width="180" height="34" rx="10"/>
+    </g>
+  </g>
+  <g fill="none" stroke="#713f12" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="460" y1="400" x2="610" y2="400"/>
+    <path d="M570 355 L615 400 L570 445"/>
+  </g>
+  <text x="90" y="780" font-family="Inter, Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#422006">Switch payroll providers</text>
+  <text x="90" y="860" font-family="Inter, Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#422006">in a day</text>
+  <text x="90" y="920" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#713f12">Import records and history. Pay the same week.</text>
+  <g transform="translate(90 975)" fill="#a16207">
+    <path d="M0 20 q15 -20 30 0 t30 0 t30 0" fill="none" stroke="#a16207" stroke-width="7" stroke-linecap="round"/>
+    <text x="110" y="32" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">Tidewell</text>
+  </g>
+</svg>

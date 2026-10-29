@@ -6,9 +6,11 @@ import { AiCampaignAnalyst } from "../components/AiCampaignAnalyst/AiCampaignAna
 import { AiCampaignInsight } from "../components/AiCampaignInsight/AiCampaignInsight";
 import { CampaignTimeline } from "../components/CampaignTimeline/CampaignTimeline";
 import { MetricCard } from "../components/MetricCard/MetricCard";
+import { PageError, PageLoading } from "../components/PageState/PageState";
 import { PlatformBreakdown } from "../components/PlatformBreakdown/PlatformBreakdown";
 import { useAd } from "../hooks/useAd";
 import { useAdInsights } from "../hooks/useAdInsights";
+import { useInsightsProvider } from "../hooks/useInsightsProvider";
 import { formatNumber, formatPercentage } from "../utils/formatters";
 import { CTR_TOOLTIP, ENGAGEMENT_RATE_TOOLTIP } from "../utils/metricTooltips";
 
@@ -17,8 +19,10 @@ import "./AdDetailPage.scss";
 export const AdDetailPage = () => {
   const { adId = "" } = useParams();
   const adQuery = useAd(adId);
+  const providerQuery = useInsightsProvider();
   const {
     data: aiInsight,
+    error: aiError,
     isFetching: isAiPending,
     isError: isAiError,
     refetch: generateInsights,
@@ -29,7 +33,7 @@ export const AdDetailPage = () => {
   if (adQuery.isPending) {
     return (
       <main className="ad-detail-page">
-        <p>Loading ad details...</p>
+        <PageLoading label="Loading ad details..." />
       </main>
     );
   }
@@ -44,13 +48,17 @@ export const AdDetailPage = () => {
           </Link>
         </div>
 
-        <h1>Unable to load ad</h1>
-
-        <p role="alert">
-          {adQuery.error instanceof Error
-            ? adQuery.error.message
-            : "Unable to load ad details"}
-        </p>
+        <PageError
+          title="Unable to load ad"
+          message={
+            adQuery.error instanceof Error
+              ? adQuery.error.message
+              : "Unable to load ad details"
+          }
+          onRetry={() => {
+            void adQuery.refetch();
+          }}
+        />
       </main>
     );
   }
@@ -111,8 +119,10 @@ export const AdDetailPage = () => {
 
           <AiCampaignAnalyst
             insight={visibleAiInsight}
+            providerStatus={providerQuery.data}
             isPending={isAiPending}
             isError={isAiError}
+            errorMessage={aiError instanceof Error ? aiError.message : undefined}
             onGenerate={() => {
               void generateInsights();
             }}

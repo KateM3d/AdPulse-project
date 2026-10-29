@@ -30,7 +30,17 @@ export const CampaignAds = ({ ads }: CampaignAdsProps) => (
         {ads.map((ad) => (
           <article key={ad.ad_id} className="campaign-ads__card">
             <div className="campaign-ads__content">
-              <h3 className="campaign-ads__title">{ad.title}</h3>
+              <div className="campaign-ads__heading">
+                <img
+                  className="campaign-ads__thumbnail"
+                  src={`/ads/${ad.image}`}
+                  alt=""
+                  loading="lazy"
+                  width={56}
+                  height={56}
+                />
+                <h3 className="campaign-ads__title">{ad.title}</h3>
+              </div>
 
               <dl className="campaign-ads__metrics">
                 <div className="campaign-ads__metric">

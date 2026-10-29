@@ -1,0 +1,30 @@
+.provider-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.2rem 0.65rem;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+
+  &--demo {
+    border-color: #f5d9a8;
+
+    background: var(--color-warning-soft);
+
+    color: var(--color-warning-text);
+  }
+
+  &--live {
+    border-color: #b7e0d9;
+
+    background: var(--color-primary-soft);
+
+    color: var(--color-primary-dark);
+  }
+}

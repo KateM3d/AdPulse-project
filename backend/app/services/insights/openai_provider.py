@@ -1,8 +1,17 @@
-from openai import OpenAI
+import logging
+
+from openai import APIStatusError, OpenAI, OpenAIError
 
 from app.core.config import Settings
 from app.core.exceptions import AiInsightsUnavailableError
-from app.schemas.ai_insights import AiCampaignInsight, AiInsightContext
+from app.schemas.ai_insights import (
+    AdInsightsResponse,
+    AiCampaignInsight,
+    AiInsightContext,
+    InsightProviderName,
+)
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """
 You are an AI campaign performance analyst.
@@ -63,28 +72,45 @@ Return:
 - the metrics that should be measured
 """
 
+UNAVAILABLE_MESSAGE = "Live AI insights are temporarily unavailable"
 
-class AiInsightsService:
+
+class OpenAIInsightsProvider:
+    name: InsightProviderName = "openai"
+
     def __init__(self, settings: Settings) -> None:
-        if not settings.openai_api_key:
+        if settings.openai_api_key is None or not settings.has_openai_api_key:
             raise AiInsightsUnavailableError("OpenAI API key is not configured")
 
+        self.model: str | None = settings.openai_model
+        self._model = settings.openai_model
         self._client = OpenAI(
-            api_key=settings.openai_api_key,
+            api_key=settings.openai_api_key.get_secret_value().strip(),
             max_retries=0,
+            timeout=settings.openai_timeout_seconds,
         )
 
-    def analyze(self, context: AiInsightContext) -> AiCampaignInsight:
-        response = self._client.responses.parse(
-            model="gpt-4o-mini",
-            instructions=SYSTEM_PROMPT,
-            input=context.model_dump_json(),
-            text_format=AiCampaignInsight,
-        )
+    def analyze(self, context: AiInsightContext) -> AdInsightsResponse:
+        try:
+            response = self._client.responses.parse(
+                model=self._model,
+                instructions=SYSTEM_PROMPT,
+                input=context.model_dump_json(),
+                text_format=AiCampaignInsight,
+            )
+        except OpenAIError as exc:
+            # Log only the error type and status; provider messages can echo request details.
+            status = exc.status_code if isinstance(exc, APIStatusError) else None
+            logger.warning("OpenAI request failed: %s (status=%s)", type(exc).__name__, status)
+            raise AiInsightsUnavailableError(UNAVAILABLE_MESSAGE) from exc
 
         result = response.output_parsed
 
         if result is None:
             raise AiInsightsUnavailableError("OpenAI did not return a structured analysis")
 
-        return result
+        return AdInsightsResponse(
+            **result.model_dump(),
+            provider=self.name,
+            model=self._model,
+        )

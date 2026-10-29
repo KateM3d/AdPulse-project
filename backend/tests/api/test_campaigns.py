@@ -24,6 +24,8 @@ def test_get_campaign_returns_campaign_analytics() -> None:
     assert data["summary"]["total_impressions"] == 1281840
     assert data["summary"]["total_clicks"] == 15220
     assert data["summary"]["total_engagements"] == 24666
+    assert data["summary"]["start_date"] == "2026-03-02"
+    assert data["summary"]["end_date"] == "2026-05-04"
 
     assert len(data["timeline"]) == 10
     assert len(data["platforms"]) == 3

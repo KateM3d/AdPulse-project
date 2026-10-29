@@ -40,7 +40,12 @@ jobs:
         run: python -m ruff format --check .
 
       - name: Type check
-        run: python -m mypy app tests
+        run: python -m mypy app tests scripts
 
       - name: Run tests
         run: python -m pytest
+
+      - name: Check demo data is reproducible
+        run: |
+          python scripts/generate_demo_data.py
+          git diff --exit-code -- data/

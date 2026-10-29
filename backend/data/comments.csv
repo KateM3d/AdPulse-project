@@ -1,0 +1,38 @@
+date,ad_id,platform,comment
+2026-03-11,payroll_in_minutes,LinkedIn,"Four minutes sounds optimistic, but I'd try it."
+2026-03-18,payroll_in_minutes,Google,Does this handle overtime and bonuses?
+2026-03-25,payroll_in_minutes,LinkedIn,Signed up for the trial after seeing this.
+2026-04-08,payroll_in_minutes,LinkedIn,Our accountant asked if it exports to our ledger.
+2026-04-15,payroll_in_minutes,Google,"Clear message, no fluff. Appreciated."
+2026-04-29,payroll_in_minutes,LinkedIn,Shared with our operations lead.
+2026-03-11,global_contractors,LinkedIn,This is exactly the problem we have with freelancers.
+2026-03-18,global_contractors,Meta,"Not relevant to me, why am I seeing this?"
+2026-03-25,global_contractors,LinkedIn,Which countries are supported?
+2026-04-08,global_contractors,Meta,"Scrolled past, then came back. Still unsure."
+2026-04-15,global_contractors,LinkedIn,How are exchange rates handled?
+2026-04-29,global_contractors,Meta,Too corporate for my feed.
+2026-03-04,payday_peace_of_mind,Meta,"Ha, the payday panic is real."
+2026-03-11,payday_peace_of_mind,Meta,Tagging our office manager.
+2026-03-25,payday_peace_of_mind,Meta,Love the illustration style.
+2026-04-01,payday_peace_of_mind,Meta,"Cute ad, but what does it actually cost?"
+2026-04-15,payday_peace_of_mind,Meta,This made me laugh. Didn't click though.
+2026-04-22,payday_peace_of_mind,Meta,Would like to see pricing up front.
+2026-05-06,payday_peace_of_mind,Meta,Relatable.
+2026-03-04,compliance_checklist,Google,"Downloaded it, genuinely useful."
+2026-03-11,compliance_checklist,LinkedIn,Good reminder on filing deadlines.
+2026-04-01,compliance_checklist,Google,Seen this one a few times now.
+2026-04-15,compliance_checklist,LinkedIn,Is there an updated version?
+2026-04-29,compliance_checklist,Google,Same checklist again?
+2026-04-22,founder_story,LinkedIn,Nice to see the people behind the product.
+2026-04-29,founder_story,LinkedIn,Relatable story for anyone who has run a small team.
+2026-05-06,founder_story,LinkedIn,What made you focus on teams under fifty?
+2026-03-11,benefits_bundle,Meta,Which benefits providers do you work with?
+2026-03-25,benefits_bundle,Google,Hard to tell what's included.
+2026-04-08,benefits_bundle,Meta,Too vague. Show me an example plan.
+2026-04-22,benefits_bundle,Meta,Not sure this is for small companies.
+2026-03-11,switch_in_a_day,Google,A day? Our last migration took three months.
+2026-03-25,switch_in_a_day,Meta,"Sceptical, but curious."
+2026-04-08,switch_in_a_day,Google,The new headline is much clearer.
+2026-04-15,switch_in_a_day,Meta,Booked a demo to see the import tool.
+2026-04-29,switch_in_a_day,Google,Does it migrate year-to-date totals?
+2026-05-06,switch_in_a_day,Meta,Finally someone talking about switching costs.

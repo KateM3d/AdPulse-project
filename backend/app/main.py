@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -19,6 +20,8 @@ from app.dependencies import (
 )
 from app.repositories.data_validator import validate_ad_relationships
 
+logger = logging.getLogger(__name__)
+
 settings = get_settings()
 
 
@@ -28,14 +31,19 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     metrics = get_metrics_repository().get_all()
     comments = get_comments_repository().get_all()
     validate_ad_relationships(ads, metrics, comments)
+
+    if settings.ai_provider == "openai" and not settings.has_openai_api_key:
+        logger.warning("AI_PROVIDER=openai but OPENAI_API_KEY is empty; insights will return 503")
+
     yield
 
 
 app = FastAPI(
-    title="Ad Campaign Tracking API",
+    title="AdPulse API",
     description=(
-        "Analytics API for exploring campaign performance, "
-        "per-ad metrics, platform breakdowns, timelines, and comments."
+        "AdPulse analytics API for exploring campaign performance, per-ad metrics, "
+        "platform breakdowns, timelines, comments, and generated insights. "
+        "All bundled campaign data is fictional demo content."
     ),
     version="1.0.0",
     lifespan=lifespan,
